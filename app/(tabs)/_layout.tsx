@@ -4,7 +4,28 @@ import { NotebookText , CircleUserRound , CirclePlus} from 'lucide-react-native'
  
 const _layout = () => {
   return (
-    <Tabs>
+    <Tabs
+        screenOptions={{
+            tabBarItemStyle: {
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            tabBarStyle: {
+                backgroundColor: '#e7e5e4',
+                borderRadius: 50,
+                marginHorizontal: 30,
+                marginBottom: 30,
+                height: 52,
+                position: 'absolute',
+                overflow: 'hidden',
+                borderWidth: 1,
+                borderColor: '#e7e5e4',
+            }
+        }}
+
+    >
         <Tabs.Screen
             name='index'
             options={{
@@ -21,7 +42,7 @@ const _layout = () => {
                 title: 'Novo Arquivo',
                 headerShown: false,
                 tabBarIcon: () => (
-                    <CirclePlus />
+                    <CirclePlus/>
                 ),
             }}
         />
