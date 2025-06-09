@@ -3,6 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function Index() {
+
+
   return (
     <SafeAreaView className="flex-1 bg-primary">
 
@@ -13,8 +15,8 @@ export default function Index() {
       <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{minHeight: '100%', paddingBottom: 10}}>
 
         <View className="flex-1 items-center justify-center">
-          <Text className="text-white text-2xl font-bold">Welcome to the App!</Text>
-          <Text className="text-white mt-4">This is the home screen.</Text>
+          <Text className="text-white text-2xl font-bold">Bem vindo ao Concursor</Text>
+          <Text className="text-white mt-4">Aqui ficaram seus resumos</Text>
         </View>
 
       </ScrollView>
