@@ -1,4 +1,4 @@
-import AuthForm from '@/app/components/AuthForm';
+import AuthForm from '@/components/AuthForm';
 import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 

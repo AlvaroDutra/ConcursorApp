@@ -1,4 +1,4 @@
-import AuthForm from '@/app/components/AuthForm';
+import AuthForm from '@/components/AuthForm';
 import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -11,7 +11,7 @@ export default function Login(){
             <Text className="text-2xl font-bold mb-6 ">Entrar</Text>
             <AuthForm type="login" />
 
-            <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+            <TouchableOpacity onPress={() => router.push('../(auth)/register')}>
                 <Text className="text-secundary mt-4">Não tem uma conta? Cadastre-se</Text>
             </TouchableOpacity>
         </View>

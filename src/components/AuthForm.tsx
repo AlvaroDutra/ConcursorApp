@@ -1,23 +1,25 @@
-import {  useState } from "react";
-import { Alert, View, TextInput } from "react-native";
-import { Button } from "react-native-paper"
+import { useAuth } from "../lib/auth";
 import { useRouter } from "expo-router";
-import { login , register} from "@/lib/auth";
+import { useState } from "react";
+import { Alert, TextInput, View } from "react-native";
+import { Button } from "react-native-paper";
+
 
 export default function AuthForm({type}: {type: 'login'| 'register'}){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
-
+    const auth = useAuth()
+    
     const handleSubmit = async () => {
         try {
             if(type === 'login'){
-                
-                await login(email, password);
+
+                await auth.login(email, password);
                 router.replace('/(tabs)/home');
             }else{
-                await register(email, password);
+                await auth.register(email, password);
                 router.replace('/(tabs)/home');
             }
 
