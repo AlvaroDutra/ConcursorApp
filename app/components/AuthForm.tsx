@@ -1,5 +1,6 @@
 import {  useState } from "react";
-import { Alert, View, TextInput, Button } from "react-native";
+import { Alert, View, TextInput } from "react-native";
+import { Button } from "react-native-paper"
 import { useRouter } from "expo-router";
 import { login , register} from "@/lib/auth";
 
@@ -26,21 +27,35 @@ export default function AuthForm({type}: {type: 'login'| 'register'}){
     }
 
     return(
-    <View className="w-full gap-4">
-      <TextInput
-        placeholder="Email"
-        className="border outline outline-neutral-950 px-4 py-3 rounded-lg"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        placeholder="Senha"
-        secureTextEntry
-        className="border px-4 py-3 rounded-lg"
-        value={password}
-        onChangeText={setPassword}
-      />
-      <Button title={type === 'login' ? 'Entrar' : 'Cadastrar'} onPress={handleSubmit}/>
+    <View className="w-full gap-52 ">
+
+      <View className="gap-4">
+        <TextInput
+          placeholder="Email"
+          className="border px-4 py-3 rounded-3xl"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          placeholder="Senha"
+          secureTextEntry
+          className="border px-4 py-3 rounded-3xl"
+          value={password}
+          onChangeText={setPassword}
+        />
+
+      </View>
+
+      <Button mode="contained" 
+              onPress={handleSubmit} 
+              buttonColor='#e7e5e4'
+              textColor="#0a0a0a"
+      >
+        {type === 'login' ? 'Entrar' : 'Cadastrar'}
+      </Button>
+    
+    
     </View>
+    
     )
 }

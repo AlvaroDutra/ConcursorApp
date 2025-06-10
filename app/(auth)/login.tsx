@@ -8,7 +8,7 @@ export default function Login(){
 
     return(
         <View className="flex-1 justify-center items-center px-6 bg-primary">
-            <Text className="text-2xl font-bold mb-6">Entrar</Text>
+            <Text className="text-2xl font-bold mb-6 ">Entrar</Text>
             <AuthForm type="login" />
 
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
