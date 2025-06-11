@@ -37,7 +37,7 @@ const _layout = () => {
             }}
         />
         <Tabs.Screen
-            name='addFile'
+            name='fileSelector'
             options={{
                 title: 'Novo Arquivo',
                 headerShown: false,
