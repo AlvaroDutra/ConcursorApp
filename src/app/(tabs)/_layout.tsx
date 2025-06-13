@@ -22,7 +22,9 @@ const _layout = () => {
                 overflow: 'hidden',
                 borderWidth: 1,
                 borderColor: '#e7e5e4',
-            }
+            },
+            tabBarActiveTintColor: '#a684ff',
+            tabBarInactiveTintColor: '#a3a3a3'
         }}
 
     >
@@ -31,9 +33,8 @@ const _layout = () => {
             options={{
                 title: 'Resumos',
                 headerShown: false,
-                tabBarIcon: () => (
-                    <NotebookText />
-                )
+                tabBarIcon: ({ focused }) => (focused ? <NotebookText/> : <NotebookText color="#a3a3a3"/>)
+                
             }}
         />
         <Tabs.Screen
@@ -41,9 +42,7 @@ const _layout = () => {
             options={{
                 title: 'Novo Arquivo',
                 headerShown: false,
-                tabBarIcon: () => (
-                    <CirclePlus/>
-                ),
+                tabBarIcon: ({focused}) => (focused ? <CirclePlus /> : <CirclePlus color="#a3a3a3"/>)
             }}
         />
         <Tabs.Screen
@@ -51,9 +50,7 @@ const _layout = () => {
             options={{
                 title: 'Perfil',
                 headerShown: false,
-                tabBarIcon: () => (
-                    <CircleUserRound />
-                )
+                tabBarIcon: ({focused}) => (focused ? <CircleUserRound/> : <CircleUserRound color="#a3a3a3"/>)
             }}
         />
         
