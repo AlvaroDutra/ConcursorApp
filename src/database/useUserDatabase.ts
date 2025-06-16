@@ -1,11 +1,7 @@
+import { UserDatabase } from "@/types/UserDatabase";
 import { useSQLiteContext } from "expo-sqlite";
 
-export type UserDatabase = {
-    id: number
-    email: string
-    password: string
-    numeroUploads: number
-}
+
 
 export function useUserDatabase() {
 
@@ -22,7 +18,7 @@ export function useUserDatabase() {
                 $numeroUploads: 0
             })
 
-            const insertedRowId = result.lastInsertRowId.toLocaleString()
+            const insertedRowId = result.lastInsertRowId
 
             return{
                 insertedRowId

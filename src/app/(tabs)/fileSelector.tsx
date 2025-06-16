@@ -33,6 +33,8 @@ import {
 
 import { SelectedFile } from '@/types/SelectedFile'
 import { ApiResponse } from '@/types/ApiResponse'
+import { useUser } from '@/contexts/UserContext'
+import { useSummaryDatabase } from '@/database/useSummaryDatabase'
 
 
 
@@ -43,7 +45,8 @@ const fileSelector = () => {
   const [ uploadProgress, setUploadProgress ] = useState<number>(0)
   const [ summary, setSummary ] = useState<string>('')
   const [ showPreview, setShowPreview ] = useState<boolean>(false)
-  const [ id , setId ] = useState<number | null>(null)
+  
+  const { userId } = useUser()
  
   const selectPDF = async() => {
     try {
@@ -105,7 +108,7 @@ const fileSelector = () => {
         type: selectedFile.mimeType || 'application/pdf'
       } as any)
 
-      const response = await fetch('http://localhost:8000', {
+      const response = await fetch('http://localhost:8000/resumo', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -151,7 +154,7 @@ const fileSelector = () => {
     return `${(bytes/ (1024 * 1024)).toFixed(1)} MB`
   }, [])
 
-  const openPreview = () =>{
+  const openPreview = () => {
     setShowPreview(true)
   }
 
@@ -159,8 +162,14 @@ const fileSelector = () => {
     setShowPreview(false)
   }
 
-  const saveSummry = () => {
-    console.log("Resumo salvo")
+  const saveSummary = async() => {
+      const summaryDatabase = useSummaryDatabase()
+
+      if(selectedFile?.name && userId){
+        await summaryDatabase.create(selectedFile.name, summary, userId)
+      }else{
+        throw new Error(`Erro ao salvar resumo`)
+      }
   }
 
   return (
@@ -186,11 +195,11 @@ const fileSelector = () => {
           <Card mode='outlined' className='mb-6'>
             <Card.Content className='p-8'>
               <View className='items-center'>
-                <CloudUpload size={64} className='mb-4'/>
+                <CloudUpload size={64} className='mb-4' color="#f8fafc"/>
                 <Text variant='titleMedium' className='text-center mb-2 font-semibold'> 
                   Selecionar PDF
                 </Text>
-                <Text variant='bodyMedium' className='text-center text-neutral-500 mb-6'>
+                <Text variant='bodyMedium' className='text-center mb-6'>
                   Escolha um arquivo PDF do seu dispositivo
                 </Text>
                 <Button
@@ -312,7 +321,7 @@ const fileSelector = () => {
               </Button>
               <Button 
               mode='outlined'
-              onPress={saveSummry}
+              onPress={saveSummary}
               icon={() => <Pin/>}
               className='flex-1'
               >
@@ -360,7 +369,7 @@ const fileSelector = () => {
               </Card.Content>
               <Card.Actions>
                 <Button onPress={closePreview}>Fechar</Button>
-                <Button mode='contained' onPress={saveSummry}>
+                <Button mode='contained' onPress={saveSummary}>
                   Salvar
                 </Button>
               </Card.Actions>
