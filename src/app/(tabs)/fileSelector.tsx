@@ -36,6 +36,7 @@ import { ApiResponse } from '@/types/ApiResponse'
 import { useUser } from '@/contexts/UserContext'
 import { useSummaryDatabase } from '@/database/useSummaryDatabase'
 import Header from '@/components/Header'
+import { useUserDatabase } from '@/database/useUserDatabase'
 
 
 
@@ -48,6 +49,17 @@ const fileSelector = () => {
   const [ showPreview, setShowPreview ] = useState<boolean>(false)
   
   const { userId } = useUser()
+
+  const userDatabase = useUserDatabase()
+
+  const incrementsUploads = async() => {
+    if(!userId){
+      console.error('Usuario não autenticado.')
+      return
+    }
+
+    await userDatabase.incrementsNumeroUploads(userId)
+  }
  
   const selectPDF = async() => {
     try {
@@ -121,6 +133,7 @@ const fileSelector = () => {
 
       if(response.ok){
         const data: ApiResponse = await response.json()
+        incrementsUploads()
         if(data.summary && data.success){
           setSummary(data.summary)
           setTimeout(() => {
@@ -139,6 +152,7 @@ const fileSelector = () => {
     }finally{
       setIsUploading(false)
       setTimeout(() => setUploadProgress(0), 1000);
+      
     }
 
   }, [selectedFile, simulateUploadProgress])

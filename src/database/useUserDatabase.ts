@@ -52,7 +52,7 @@ export function useUserDatabase() {
         } 
     }
 
-    async function updateNumeroUploads(id: number){
+    async function incrementsNumeroUploads(id: number){
         
         const statement = await db.prepareAsync("UPDATE Users SET numeroUploads = numeroUploads + 1 WHERE id = $id") 
         
@@ -68,6 +68,6 @@ export function useUserDatabase() {
         }
     }
 
-    return { create, findByEmailAndPassword }
+    return { create, findByEmailAndPassword, incrementsNumeroUploads }
 
 }

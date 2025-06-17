@@ -28,14 +28,8 @@ export default function Index() {
   }, [userId])
 
   useEffect(() => {
-    const mockData: SummaryDatabase[] = [
-    { id: 1, title: "Resumo do Concurso X", summary: "Esse é um exemplo de resumo gerado pela IA sobre o concurso X..." , idUser: 1},
-    { id: 2, title: "Resumo do Concurso Y", summary: "Aqui temos o resumo do concurso Y, com as principais informações..." , idUser: 1},
-    { id: 3, title: "Resumo do Concurso Z", summary: "Resumo detalhado sobre o concurso Z, gerado automaticamente." , idUser: 1},
-    ]
-    setSummarys(mockData)
-    // getUserSummarys()
-  }, [])
+    getUserSummarys()
+  }, [getUserSummarys()])
 
   
   const openSummaryModal = (summary: SummaryDatabase) => {
