@@ -1,14 +1,18 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import {  UserRound } from 'lucide-react-native'
+import { Text } from 'react-native-paper'
+import Header from '@/components/Header'
 
 const profile = () => {
   return (
     <SafeAreaView className="flex-1 bg-primary">
 
-      <View className="flex-row items-center justify-between px-5 py-5">
-        <Text className="text-neutral-100 font-bold text-4xl">Meu Perfil</Text>
-      </View>
+      <Header
+        title='Meu Perfil'
+        icon={<UserRound/>}
+      />
       
       <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{minHeight: '100%', paddingBottom: 10}}>
 

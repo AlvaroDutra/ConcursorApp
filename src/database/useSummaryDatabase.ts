@@ -29,6 +29,24 @@ export function useSummaryDatabase(){
                 await statement.finalizeAsync()
             }
         }
-        return { create }
+
+    async function getSummaryByUserId(userId: number) {
+        try {
+            const query = "SELECT * FROM Summarys WHERE idUser = ?"
+            const response = await db.getAllAsync<SummaryDatabase>(query, [userId])
+
+            if(!response){
+                return []
+            }
+
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
+
+
+    return { create, getSummaryByUserId }
 
 }

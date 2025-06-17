@@ -35,6 +35,7 @@ import { SelectedFile } from '@/types/SelectedFile'
 import { ApiResponse } from '@/types/ApiResponse'
 import { useUser } from '@/contexts/UserContext'
 import { useSummaryDatabase } from '@/database/useSummaryDatabase'
+import Header from '@/components/Header'
 
 
 
@@ -175,19 +176,10 @@ const fileSelector = () => {
   return (
     <SafeAreaView className="flex-1 bg-primary">
 
-      <View className="p-6">
-        <View className="items-center mb-8 mt-4">
-          <Surface
-            style={[styles.surface]}
-            elevation={2}
-          >
-            <FilePlus2 size={23} />
-            <Text variant="headlineMedium" style={[styles.text]}>
-              Selecione um arquivo
-            </Text>
-          </Surface>
-        </View>
-      </View>
+      <Header
+        title='Selecionar arquivo'
+        icon={<FilePlus2/>}
+      />
       
       <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{minHeight: '100%', paddingBottom: 10}}>
 
@@ -208,6 +200,7 @@ const fileSelector = () => {
                   className='w-full'
                   contentStyle={{ paddingVertical: 8 }}
                   buttonColor='#7008e7'
+                  textColor='#f8fafc'
                 >
                   Selecionar arquivo
                 </Button>
@@ -220,7 +213,7 @@ const fileSelector = () => {
               <View className='flex-row items-center justify-between mb-3'>
                 <View className='flex-row items-center flex-1'>
                   <Surface className='w-12 h-12 rounded-lg items-center justify-center mr-3' elevation={0}>
-                    <FilePlus size={24}/>
+                    <FilePlus size={24} color="#f8fafc"/>
                   </Surface>
                   <View className='flex-1'>
                     <Text variant='titleMedium' className='font-semibold' numberOfLines={1}>
@@ -273,6 +266,7 @@ const fileSelector = () => {
                 className='w-full'
                 contentStyle={{ paddingVertical: 8 }}
                 buttonColor='#7008e7'
+                textColor='#f8fafc'
               >
                 {isUploading ? 'Gerando resumo...' : 'Gerar resumo inteligente'}
               </Button>
@@ -382,24 +376,3 @@ const fileSelector = () => {
 }
 
 export default fileSelector
-
-
-const styles = StyleSheet.create({
-  surface: {
-    width: 350,
-    height: 70,
-    padding: 4,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#f8fafc'
-  },
-  text :{
-    color: '#0a0a0a',
-    textAlign: 'center',
-    fontWeight: 700,
-    marginLeft: 8 
-  }
-
-})
