@@ -5,8 +5,8 @@ import { Surface, Text } from 'react-native-paper'
 
 const Header = ({ title, icon }: HeaderProps) => {
   return (
-    <View className="p-6">
-        <View className="items-center mb-8 mt-4">
+    <View className="p-3">
+        <View className="items-center mb-2 mt-4">
           <Surface
             elevation={2}
             style={[styles.surface]}

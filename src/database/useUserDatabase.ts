@@ -33,7 +33,6 @@ export function useUserDatabase() {
         }
     }
 
-
     async function findByEmailAndPassword(email: string, password: string) {
     
         try {
@@ -68,6 +67,22 @@ export function useUserDatabase() {
         }
     }
 
-    return { create, findByEmailAndPassword, incrementsNumeroUploads }
+    async function getUserEmailById(id:number) {
+        
+        try {
+            const query = "SELECT * FROM Users WHERE id = ?"  
+            const response = await db.getFirstAsync<UserDatabase>(query, [id])
+            
+            if(response){
+                return response.email
+            }else{
+                return 'Usuario não possui email ??'
+            }
+        } catch (error) {
+            throw error
+        }
+        
+    }
+    return { create, findByEmailAndPassword, incrementsNumeroUploads, getUserEmailById }
 
 }

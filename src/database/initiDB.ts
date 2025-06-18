@@ -20,3 +20,20 @@ export async function initDB(database: SQLiteDatabase){
         `)
 
 }
+
+// TO DO
+// cirar tabela para as badges
+// Tavez fique assim:
+// CREATE IF NOT EXISTS Badges(
+//      id INTEGER PRIMARY KEY AUTOINCREMENT,
+//      title TEXT NOT NULL,
+//      threshold INTEGER NOT NULL,
+//      description TEXT
+//)
+// Tambem vai precisar de uma tabela para relacionar as badges com os usuarios (relação n - n)
+// CREATE IF NOT EXISTS UsersBadges (
+//      badgeId INTEGER NOT NULL,
+//      userId INTEGER NOT NULL,
+//      FOREIGN KEY(badgeId) REFERENCES Badges(id)
+//      FOREIGN KEY(userId) REFERENCES Users(id)
+// ) 

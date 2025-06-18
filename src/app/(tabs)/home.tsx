@@ -55,7 +55,7 @@ export default function Index() {
         <View className="flex-1 items-center justify-center">
           {summarys.length === 0 ? (
             <View>
-              <Text className="text-white text-2xl font-bold">Bem vindo ao Concursor User-{userId}</Text>
+              <Text className="text-white text-2xl font-bold">Bem vindo ao Concursor</Text>
               <Text className="text-white mt-4">Aqui ficarão seus resumos</Text>
             </View>
           ) : (

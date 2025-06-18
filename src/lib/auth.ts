@@ -1,6 +1,6 @@
 import { useUser } from "@/contexts/UserContext"
-import { useUserDatabase } from "../database/useUserDatabase"
 import { useState } from "react"
+import { useUserDatabase } from "../database/useUserDatabase"
 
 
 export function useAuth(){
