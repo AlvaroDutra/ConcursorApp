@@ -37,7 +37,7 @@ export function useAuth(){
     }
 
     function isLoggedIn(){
-        return loggedIn
+        return true
     }
 
     return { login, register, isLoggedIn }

@@ -1,5 +1,5 @@
-import { View, ScrollView, Alert } from 'react-native'
-import React, { useCallback, useState }from 'react'
+import { View, ScrollView, Alert, StyleSheet } from 'react-native'
+import React, { useCallback, useEffect, useState }from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as DocumentPicker from 'expo-document-picker'
 import {
@@ -52,6 +52,18 @@ const fileSelector = () => {
 
   const userDatabase = useUserDatabase()
 
+  const setMockSummary = () => {
+    console.log('setMockSummary foi chamado')
+    const summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt et risus at sollicitudin. Proin viverra neque et nunc sagittis ultricies. Ut in elit non ligula vestibulum bibendum sed eget est. Vestibulum tincidunt vitae nisi euismod eleifend. Nullam sed finibus felis, nec cursus mauris. Donec elementum libero pulvinar, laoreet enim sed, luctus urna. Nulla luctus, tortor a porta commodo, libero ipsum aliquam erat, vel iaculis justo metus eu massa. Duis consectetur, nisi nec maximus luctus, tortor lectus laoreet dui, sit amet fermentum enim magna nec nisl. Praesent bibendum mauris leo, vel egestas turpis sollicitudin a. Aenean ac varius purus. Nunc ut aliquam lorem. Nunc blandit suscipit magna, vitae congue dolor ornare interdum. Suspendisse odio orci, blandit eget leo vehicula, porttitor dignissim justo. Sed hendrerit commodo vulputate."
+
+    setIsUploading(true)
+    setUploadProgress(0)
+    setSummary(summary)
+    setUploadProgress(1)
+    setIsUploading(false)
+  }
+
+
   const incrementsUploads = async() => {
     if(!userId){
       console.error('Usuario não autenticado.')
@@ -78,7 +90,7 @@ const fileSelector = () => {
           mimeType: file.mimeType
         }
         setSelectedFile(selectedFile)
-        console.log(`Arquivo selecionado: ${selectedFile}`)
+        console.log(`Arquivo selecionado: ${selectedFile.name}`)
       }
     } catch (error) {
         console.error('Erro ao selecionar arquivo', error)
@@ -101,66 +113,66 @@ const fileSelector = () => {
     })
   },[])
 
-  const uploadAndProcessFile = useCallback(async(): Promise<void> =>{
-    console.log('chegou no metodo')
-    if(!selectedFile){
-      Alert.alert('Atenção', 'Selecione um arquivo primeiro')
-      return
-    }
+  // const uploadAndProcessFile = useCallback(async(): Promise<void> =>{
+  //   console.log('chegou no metodo')
+  //   if(!selectedFile){
+  //     Alert.alert('Atenção', 'Selecione um arquivo primeiro')
+  //     return
+  //   }
 
-    setIsUploading(true)
-    setUploadProgress(0)
+  //   setIsUploading(true)
+  //   setUploadProgress(0)
 
-    try {
+  //   try {
       
-      await simulateUploadProgress()
+  //     await simulateUploadProgress()
 
-      const formData = new FormData()
-      formData.append('file', {
-        uri: selectedFile.uri,
-        name: selectedFile.name,
-        type: selectedFile.mimeType || 'application/pdf'
-      } as any)
+  //     const formData = new FormData()
+  //     formData.append('file', {
+  //       uri: selectedFile.uri,
+  //       name: selectedFile.name,
+  //       type: selectedFile.mimeType || 'application/pdf'
+  //     } as any)
 
-      console.log('Antes da requisicao')
-      const response = await fetch('http://192.168.3.9:8000/resumo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData
-      })
+  //     console.log('Antes da requisicao')
+  //     const response = await fetch('http://192.168.3.9:8000/resumo', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //       body: formData
+  //     })
 
-      console.log('requisicao concluida')
-      console.log(response.status)
-      setUploadProgress(1)
+  //     console.log('requisicao concluida')
+  //     console.log(response.status)
+  //     setUploadProgress(1)
 
-      if(response.ok){
-        const data: ApiResponse = await response.json()
-        incrementsUploads()
-        console.log(data.summary.split("</think>")[1].trim())
-        if(data.summary && data.success){
-          setSummary(data.summary.split("</think>")[1].trim())
-          setTimeout(() => {
-            Alert.alert('Sucesso', 'PDF processado com sucesso!')
-          }, 500)
-        }else{
-          throw new Error(data.error || 'Erro')
-        }
-      }else{
-        throw new Error(`Erro HTTP: ${response.status}`)
-      }
-    } catch (error) {
-      console.error('Erro ao processar PDF :( ', error)
-      const errorMessage = error instanceof Error ? error.message: 'Erro'
-      Alert.alert('Erro', `Não foi possivel processar o arquivo: ${errorMessage}`)      
-    }finally{
-      setIsUploading(false)
-      setTimeout(() => setUploadProgress(0), 1000);
+  //     if(response.ok){
+  //       const data: ApiResponse = await response.json()
+  //       incrementsUploads()
+  //       console.log(data.summary.split("</think>")[1].trim())
+  //       if(data.summary && data.success){
+  //         setSummary(data.summary.split("</think>")[1].trim())
+  //         setTimeout(() => {
+  //           Alert.alert('Sucesso', 'PDF processado com sucesso!')
+  //         }, 500)
+  //       }else{
+  //         throw new Error(data.error || 'Erro')
+  //       }
+  //     }else{
+  //       throw new Error(`Erro HTTP: ${response.status}`)
+  //     }
+  //   } catch (error) {
+  //     console.error('Erro ao processar PDF :( ', error)
+  //     const errorMessage = error instanceof Error ? error.message: 'Erro'
+  //     Alert.alert('Erro', `Não foi possivel processar o arquivo: ${errorMessage}`)      
+  //   }finally{
+  //     setIsUploading(false)
+  //     setTimeout(() => setUploadProgress(0), 1000);
       
-    }
+  //   }
 
-  }, [selectedFile, simulateUploadProgress])
+  // }, [selectedFile, simulateUploadProgress])
 
   const clearSelection = useCallback((): void =>{
     setSelectedFile(null)
@@ -200,17 +212,17 @@ const fileSelector = () => {
         icon={<FilePlus2/>}
       />
       
-      <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{minHeight: '100%', paddingBottom: 10}}>
+      <ScrollView className="flex-1 px-5 max-h-[75%]" showsVerticalScrollIndicator={false} contentContainerStyle={{minHeight: '100%', paddingBottom: 10}}>
 
         {!selectedFile ? (
-          <Card mode='outlined' className='mb-6'>
-            <Card.Content className='p-8'>
-              <View className='items-center'>
-                <CloudUpload size={64} className='mb-4' color="#f8fafc"/>
-                <Text variant='titleMedium' className='text-center mb-2 font-semibold'> 
+          <Card mode='outlined' style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <View className='items-center gap-1'>
+                <CloudUpload size={64} className='mb-4'/>
+                <Text variant='titleMedium' style={styles.text}> 
                   Selecionar PDF
                 </Text>
-                <Text variant='bodyMedium' className='text-center mb-6'>
+                <Text variant='bodyMedium' style={styles.text}>
                   Escolha um arquivo PDF do seu dispositivo
                 </Text>
                 <Button
@@ -227,18 +239,18 @@ const fileSelector = () => {
             </Card.Content>
           </Card>
         ) : (
-          <Card className='mb-6' mode="elevated">
-            <Card.Content className='p4'>
+          <Card style={styles.card} mode="elevated">
+            <Card.Content style={styles.cardContent}>
               <View className='flex-row items-center justify-between mb-3'>
                 <View className='flex-row items-center flex-1'>
-                  <Surface className='w-12 h-12 rounded-lg items-center justify-center mr-3' elevation={0}>
-                    <FilePlus size={24} color="#f8fafc"/>
+                  <Surface style={styles.surface} elevation={0}>
+                    <FilePlus size={24}/>
                   </Surface>
                   <View className='flex-1'>
-                    <Text variant='titleMedium' className='font-semibold' numberOfLines={1}>
+                    <Text variant='titleMedium' style={styles.text} numberOfLines={1}>
                       {selectedFile.name}
                     </Text>
-                    <Text variant='bodySmall' className='text-neutral-500'>
+                    <Text variant='bodySmall' style={styles.text}>
                       {formatFileSize(selectedFile.size)}
                     </Text>
                   </View>
@@ -252,7 +264,7 @@ const fileSelector = () => {
               </View>
               <Chip
                 icon={() => <CircleCheck color="#059669"/>}
-                className='self-start'
+                style={styles.chip}
               >
                 Arquivo selecionado
               </Chip>
@@ -262,7 +274,7 @@ const fileSelector = () => {
 
         {selectedFile && !summary && (
           <Card className='mb-6'>
-            <Card.Content className='p-4'>
+            <View>
               {isUploading && (
                 <View className='mb-4'>
                   <View className='flex-row justify-between items-center mb-2'>
@@ -279,33 +291,26 @@ const fileSelector = () => {
 
               <Button 
                 mode='contained'
-                onPress={uploadAndProcessFile}
+                onPress={setMockSummary}
                 disabled={isUploading}
                 icon={() => isUploading ? <Loader/> : <Brain color="#f8fafc"/>}
-                className='w-full'
+                style={styles.button}
                 contentStyle={{ paddingVertical: 8 }}
-                buttonColor='#7008e7'
+                buttonColor='#581c87'
                 textColor='#f8fafc'
               >
                 {isUploading ? 'Gerando resumo...' : 'Gerar resumo inteligente'}
               </Button>
-            </Card.Content>
+            </View>
           </Card>
         )}
 
         {summary && (
           <View>
-            <View className='flex-row items-center mb-4'>
-              <Brain size={24} color="#059669"/>
-              <Text variant='headlineSmall' className='ml-2 font-bold text-neutral-500'>
-                Resumo gerado
-              </Text>
-            </View>
-
-            <Card className='mb-6' mode='elevated'>
-              <Card.Content className='p-6'>
+            <Card style={styles.card} mode='elevated'>
+              <ScrollView className='p-6 bg-neutral-50 rounded-xl'>
                 <View className='flex-row items-center justify-between mb-4'>
-                  <Chip icon={() => <WandSparkles/>} mode='outlined'>
+                  <Chip icon={() => <WandSparkles color="#fde047"/>} mode='outlined' style={styles.chip} selectedColor='#f8fafc'>
                     Resumo inteligente
                   </Chip>
                   <IconButton
@@ -320,7 +325,7 @@ const fileSelector = () => {
                 <Markdown>
                   {summary}
                 </Markdown>
-              </Card.Content>
+              </ScrollView>
             </Card>
 
             <View className='flex-row gap-3 mb-6'>
@@ -396,6 +401,35 @@ const fileSelector = () => {
 
 export default fileSelector
 
+const styles = StyleSheet.create({
+  card:{
+    marginBottom: 24,
+  },
+  chip: {
+    backgroundColor: "#7008e7",
+    alignSelf: 'flex-start'
+  },
+  cardContent: {
+    padding: 4,
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+  },
+  text: {
+    color: '#0a0a0a'
+  },
+  button: {
+    borderRadius: 12,
+    width: '100%'
+  },
+  surface: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12
+  }
+})
 //TO DO
 // 1. Organizar os componenetes de modo que o conteudo do meio nao interfira na barra de navegacao
 // 2. Implementar componente que interpreta markdown
