@@ -1,4 +1,4 @@
-import { View, ScrollView, Alert, StyleSheet } from 'react-native'
+import { View, ScrollView, Alert } from 'react-native'
 import React, { useCallback, useState }from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as DocumentPicker from 'expo-document-picker'
@@ -30,7 +30,7 @@ import {
   FileText,
   Minimize2
 } from 'lucide-react-native'
-
+import  Markdown from 'react-native-markdown-display' 
 import { SelectedFile } from '@/types/SelectedFile'
 import { ApiResponse } from '@/types/ApiResponse'
 import { useUser } from '@/contexts/UserContext'
@@ -102,6 +102,7 @@ const fileSelector = () => {
   },[])
 
   const uploadAndProcessFile = useCallback(async(): Promise<void> =>{
+    console.log('chegou no metodo')
     if(!selectedFile){
       Alert.alert('Atenção', 'Selecione um arquivo primeiro')
       return
@@ -121,7 +122,8 @@ const fileSelector = () => {
         type: selectedFile.mimeType || 'application/pdf'
       } as any)
 
-      const response = await fetch('http://localhost:8000/resumo', {
+      console.log('Antes da requisicao')
+      const response = await fetch('http://192.168.3.9:8000/resumo', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -129,13 +131,16 @@ const fileSelector = () => {
         body: formData
       })
 
+      console.log('requisicao concluida')
+      console.log(response.status)
       setUploadProgress(1)
 
       if(response.ok){
         const data: ApiResponse = await response.json()
         incrementsUploads()
+        console.log(data.summary.split("</think>")[1].trim())
         if(data.summary && data.success){
-          setSummary(data.summary)
+          setSummary(data.summary.split("</think>")[1].trim())
           setTimeout(() => {
             Alert.alert('Sucesso', 'PDF processado com sucesso!')
           }, 500)
@@ -146,7 +151,7 @@ const fileSelector = () => {
         throw new Error(`Erro HTTP: ${response.status}`)
       }
     } catch (error) {
-      console.error('Erro ao processar arquivo: ', error)
+      console.error('Erro ao processar PDF :( ', error)
       const errorMessage = error instanceof Error ? error.message: 'Erro'
       Alert.alert('Erro', `Não foi possivel processar o arquivo: ${errorMessage}`)      
     }finally{
@@ -312,9 +317,9 @@ const fileSelector = () => {
 
                 <Divider className='mb-4'/>
 
-                <Text variant='bodyLarge' className='leading-7 text-neutral-950'>
+                <Markdown>
                   {summary}
-                </Text>
+                </Markdown>
               </Card.Content>
             </Card>
 
@@ -390,3 +395,7 @@ const fileSelector = () => {
 }
 
 export default fileSelector
+
+//TO DO
+// 1. Organizar os componenetes de modo que o conteudo do meio nao interfira na barra de navegacao
+// 2. Implementar componente que interpreta markdown
