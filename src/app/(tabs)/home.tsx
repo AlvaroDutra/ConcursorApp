@@ -102,4 +102,7 @@ export default function Index() {
   );
 }
 
+// TO DO 
+// 1. Implementar botão para excluir resumos 
+// 2. Adiciornar função para editar titulo do resumo
 

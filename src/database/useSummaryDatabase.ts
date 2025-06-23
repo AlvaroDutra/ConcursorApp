@@ -16,7 +16,7 @@ export function useSummaryDatabase(){
                 })
     
                 const insertedRowId = result.lastInsertRowId
-    
+                console.log(`Summary ID: ${insertedRowId}\nTitle: ${title}\nSummary: ${summary}\nUser ID: ${userid}`)
                 return{
                     insertedRowId
                 }

@@ -55,7 +55,7 @@ const profile = () => {
                     <Avatar.Icon icon={() => <CircleUserRound size={64} strokeWidth={1}/>}/>
                   </View>
                   <Text variant='titleSmall' style={styles.text}>
-                    {userEmail}
+                    {userEmail.split('@')[0]}
                   </Text>
                 </View>
               </View>

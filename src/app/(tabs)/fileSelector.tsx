@@ -51,6 +51,7 @@ const fileSelector = () => {
   const { userId } = useUser()
 
   const userDatabase = useUserDatabase()
+  const summaryDatabase = useSummaryDatabase()
 
   const setMockSummary = () => {
     console.log('setMockSummary foi chamado')
@@ -195,13 +196,20 @@ const fileSelector = () => {
   }
 
   const saveSummary = async() => {
-      const summaryDatabase = useSummaryDatabase()
+      console.log("Conectando a base de dados")
 
-      if(selectedFile?.name && userId){
-        await summaryDatabase.create(selectedFile.name, summary, userId)
-      }else{
-        throw new Error(`Erro ao salvar resumo`)
+      try {
+        if(selectedFile?.name && userId){
+          await summaryDatabase.create(selectedFile.name, summary, userId)
+          console.log("Resumo salvo")
+        }else {
+          console.error("Erro ao salver resumo. Verifique o nome do arquivo.")
+        }
+      } catch (error) { 
+        throw error
       }
+      
+
   }
 
   return (
@@ -263,7 +271,7 @@ const fileSelector = () => {
                 />
               </View>
               <Chip
-                icon={() => <CircleCheck color="#059669"/>}
+                icon={() => <CircleCheck color="#65a30d"/>}
                 style={styles.chip}
               >
                 Arquivo selecionado
@@ -330,18 +338,11 @@ const fileSelector = () => {
 
             <View className='flex-row gap-3 mb-6'>
               <Button 
-              mode='outlined'
-              onPress={openPreview}
-              icon={() => <ViewIcon/>}
-              className='flex-1'
-              >
-                Visualizar
-              </Button>
-              <Button 
-              mode='outlined'
+              mode='contained-tonal'
               onPress={saveSummary}
               icon={() => <Pin/>}
               className='flex-1'
+              contentStyle={{ backgroundColor: "#7008e7" }}
               >
                 Salvar
               </Button>
@@ -352,7 +353,7 @@ const fileSelector = () => {
             onPress={clearSelection}
             icon={() => <Plus/>}
             className='w-full'
-            contentStyle={{ paddingVertical: 8 }}
+            contentStyle={{ paddingVertical: 8, backgroundColor: "#7008e7" }}
             >
               Processar novo arquivo
             </Button>
@@ -406,7 +407,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   chip: {
-    backgroundColor: "#7008e7",
+    backgroundColor: "#a855f7",
     alignSelf: 'flex-start'
   },
   cardContent: {
@@ -430,6 +431,3 @@ const styles = StyleSheet.create({
     marginRight: 12
   }
 })
-//TO DO
-// 1. Organizar os componenetes de modo que o conteudo do meio nao interfira na barra de navegacao
-// 2. Implementar componente que interpreta markdown
