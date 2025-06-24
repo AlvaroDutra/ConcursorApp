@@ -60,6 +60,7 @@ const fileSelector = () => {
     setIsUploading(true)
     setUploadProgress(0)
     setSummary(summary)
+    incrementsUploads()
     setUploadProgress(1)
     setIsUploading(false)
   }
@@ -72,6 +73,7 @@ const fileSelector = () => {
     }
 
     await userDatabase.incrementsNumeroUploads(userId)
+    console.log("Numero de upload incrementado")
   }
  
   const selectPDF = async() => {

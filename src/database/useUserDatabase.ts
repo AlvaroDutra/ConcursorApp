@@ -83,6 +83,22 @@ export function useUserDatabase() {
         }
         
     }
-    return { create, findByEmailAndPassword, incrementsNumeroUploads, getUserEmailById }
+    
+    async function getUserUploadsById(id:number) {
+        try {
+            const query = "SELECT * FROM Users WHERE id = ?"  
+            const response = await db.getFirstAsync<UserDatabase>(query, [id])
+            
+            if(response){
+                return response.numeroUploads
+            }else{
+                return 0
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    return { create, findByEmailAndPassword, incrementsNumeroUploads, getUserEmailById, getUserUploadsById }
 
 }

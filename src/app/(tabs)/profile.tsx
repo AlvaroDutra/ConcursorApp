@@ -1,20 +1,60 @@
 import { StyleSheet, TouchableOpacity, View, Modal } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import {  CircleUserRound, UserRound } from 'lucide-react-native'
-import { Avatar, Card , Text } from 'react-native-paper'
+import {  CircleUserRound, UserRound, RefreshCcw } from 'lucide-react-native'
+import { Avatar, Card , IconButton, Text } from 'react-native-paper'
 import Header from '@/components/Header'
 import BadgesModal from '@/components/BadgesModal'
 import { useUser } from '@/contexts/UserContext'
 import { useUserDatabase } from '@/database/useUserDatabase'
+import { useBadgesDatabase } from '@/database/useBagdeDatabase'
+import { BadgeDatabase } from '@/types/BadgeDatabase'
+import { useUsersBadgesDatabase } from '@/database/useUsersBadgesDatabase'
 
 const profile = () => {
   const [ showBadgesModal, setShowBadgesModal ] = useState(false)
   const [ userEmail, setUserEmail ] = useState('')
+  const [userBadges, setUserBadges] = useState<BadgeDatabase[]>([])
 
   const { userId } = useUser()
-  const userBadges = ['Badge 01','Badge 02','Badge 03']
+
   const userDatabase = useUserDatabase()
+  const badgeDatabase = useBadgesDatabase()
+  const usersBadgesDatabase = useUsersBadgesDatabase()
+  
+
+  const secureUserBadges = async() =>{
+    if(userId == null){
+      throw new Error("Usuário precisa estar autenticado.")
+    }
+    console.log("Garantindo insigina para usuario")
+
+    const userUploads = await userDatabase.getUserUploadsById(userId)
+    console.log("Verificando uploads do usuario")
+
+    if(userUploads == 0){
+      throw alert("Usuario não possui uploads suficientes")
+    }
+
+    if(userUploads > 5){
+      console.log("Muito upload poucas insignias", userUploads)
+    }
+    const badge = await badgeDatabase.getBadgeByThreshold(userUploads)
+    console.log("Verificando insignias disponiveis")
+
+    userBadges.push(badge)
+    setUserBadges(userBadges)
+    console.log("Presentiando usuario com insignias")
+
+    await usersBadgesDatabase.create(userId, badge.id)
+    console.log("Finalizando processo de garantir insignia ao usuario")
+  }
+
+  const getUserBadges = async() => {
+    console.log('Pegando todas as badges')
+    const result = await badgeDatabase.getAllBadges()
+    setUserBadges(result)
+  }
 
   const getUserEmail = useCallback(async(): Promise<void> => {
     if(!userId){
@@ -23,8 +63,13 @@ const profile = () => {
     }
     const result = await userDatabase.getUserEmailById(userId)
     setUserEmail(result)
+    console.log("email encontrado.")
   }, [userId])
 
+  const deleteRelation = async() =>{
+    await usersBadgesDatabase.deleteAll()
+    console.log("deletando todas as relacoes entre indignias e usuarios")
+  } 
   useEffect(()=>{
     getUserEmail()
   }, [getUserEmail])
@@ -66,6 +111,10 @@ const profile = () => {
                   activeOpacity={0.7}
                 >
                   <Text style={styles.text}>Badges</Text>
+                  <IconButton
+                    icon={()=> <RefreshCcw color='#a684ff'/>}
+                    onPress={secureUserBadges}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -108,7 +157,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#c4b5fd",
     borderRadius: 12,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    flexDirection: 'row'
   },
   contaier: {
     flex: 1,

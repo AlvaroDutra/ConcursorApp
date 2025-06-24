@@ -17,7 +17,7 @@ const BadgesModal = ({visible, onClose, badges}: BagdeModalProps) => {
                 <ScrollView style={styles.badgeList} contentContainerStyle={{ paddingBottom: 20 }}>
                     {badges.map((badge, index)=>(
                         <View key={index} style={styles.badgeItem}>
-                            <Text>{badge}</Text>
+                            <Text>{badge.title}</Text>
                         </View>
                     ))}
                 </ScrollView>

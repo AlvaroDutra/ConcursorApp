@@ -1,8 +1,9 @@
 import { GestureResponderEvent } from "react-native"
+import { BadgeDatabase } from "./BadgeDatabase"
 
 export type BagdeModalProps = {
     visible: boolean,
-    badges: string[],
+    badges: BadgeDatabase[],
     onClose: (event: GestureResponderEvent) => void
 
 }
