@@ -53,17 +53,17 @@ const fileSelector = () => {
   const userDatabase = useUserDatabase()
   const summaryDatabase = useSummaryDatabase()
 
-  const setMockSummary = () => {
-    console.log('setMockSummary foi chamado')
-    const summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt et risus at sollicitudin. Proin viverra neque et nunc sagittis ultricies. Ut in elit non ligula vestibulum bibendum sed eget est. Vestibulum tincidunt vitae nisi euismod eleifend. Nullam sed finibus felis, nec cursus mauris. Donec elementum libero pulvinar, laoreet enim sed, luctus urna. Nulla luctus, tortor a porta commodo, libero ipsum aliquam erat, vel iaculis justo metus eu massa. Duis consectetur, nisi nec maximus luctus, tortor lectus laoreet dui, sit amet fermentum enim magna nec nisl. Praesent bibendum mauris leo, vel egestas turpis sollicitudin a. Aenean ac varius purus. Nunc ut aliquam lorem. Nunc blandit suscipit magna, vitae congue dolor ornare interdum. Suspendisse odio orci, blandit eget leo vehicula, porttitor dignissim justo. Sed hendrerit commodo vulputate."
+  // const setMockSummary = () => {
+  //   console.log('setMockSummary foi chamado')
+  //   const summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt et risus at sollicitudin. Proin viverra neque et nunc sagittis ultricies. Ut in elit non ligula vestibulum bibendum sed eget est. Vestibulum tincidunt vitae nisi euismod eleifend. Nullam sed finibus felis, nec cursus mauris. Donec elementum libero pulvinar, laoreet enim sed, luctus urna. Nulla luctus, tortor a porta commodo, libero ipsum aliquam erat, vel iaculis justo metus eu massa. Duis consectetur, nisi nec maximus luctus, tortor lectus laoreet dui, sit amet fermentum enim magna nec nisl. Praesent bibendum mauris leo, vel egestas turpis sollicitudin a. Aenean ac varius purus. Nunc ut aliquam lorem. Nunc blandit suscipit magna, vitae congue dolor ornare interdum. Suspendisse odio orci, blandit eget leo vehicula, porttitor dignissim justo. Sed hendrerit commodo vulputate."
 
-    setIsUploading(true)
-    setUploadProgress(0)
-    setSummary(summary)
-    incrementsUploads()
-    setUploadProgress(1)
-    setIsUploading(false)
-  }
+  //   setIsUploading(true)
+  //   setUploadProgress(0)
+  //   setSummary(summary)
+  //   incrementsUploads()
+  //   setUploadProgress(1)
+  //   setIsUploading(false)
+  // }
 
 
   const incrementsUploads = async() => {
@@ -116,66 +116,66 @@ const fileSelector = () => {
     })
   },[])
 
-  // const uploadAndProcessFile = useCallback(async(): Promise<void> =>{
-  //   console.log('chegou no metodo')
-  //   if(!selectedFile){
-  //     Alert.alert('Atenção', 'Selecione um arquivo primeiro')
-  //     return
-  //   }
+  const uploadAndProcessFile = useCallback(async(): Promise<void> =>{
+    console.log('chegou no metodo')
+    if(!selectedFile){
+      Alert.alert('Atenção', 'Selecione um arquivo primeiro')
+      return
+    }
 
-  //   setIsUploading(true)
-  //   setUploadProgress(0)
+    setIsUploading(true)
+    setUploadProgress(0)
 
-  //   try {
+    try {
       
-  //     await simulateUploadProgress()
+      await simulateUploadProgress()
 
-  //     const formData = new FormData()
-  //     formData.append('file', {
-  //       uri: selectedFile.uri,
-  //       name: selectedFile.name,
-  //       type: selectedFile.mimeType || 'application/pdf'
-  //     } as any)
+      const formData = new FormData()
+      formData.append('file', {
+        uri: selectedFile.uri,
+        name: selectedFile.name,
+        type: selectedFile.mimeType || 'application/pdf'
+      } as any)
 
-  //     console.log('Antes da requisicao')
-  //     const response = await fetch('http://192.168.3.9:8000/resumo', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //       body: formData
-  //     })
+      console.log('Antes da requisicao')
+      const response = await fetch('http://25.45.91.182:8000/resumo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData
+      })
 
-  //     console.log('requisicao concluida')
-  //     console.log(response.status)
-  //     setUploadProgress(1)
+      console.log('requisicao concluida')
+      console.log(response.status)
+      setUploadProgress(1)
 
-  //     if(response.ok){
-  //       const data: ApiResponse = await response.json()
-  //       incrementsUploads()
-  //       console.log(data.summary.split("</think>")[1].trim())
-  //       if(data.summary && data.success){
-  //         setSummary(data.summary.split("</think>")[1].trim())
-  //         setTimeout(() => {
-  //           Alert.alert('Sucesso', 'PDF processado com sucesso!')
-  //         }, 500)
-  //       }else{
-  //         throw new Error(data.error || 'Erro')
-  //       }
-  //     }else{
-  //       throw new Error(`Erro HTTP: ${response.status}`)
-  //     }
-  //   } catch (error) {
-  //     console.error('Erro ao processar PDF :( ', error)
-  //     const errorMessage = error instanceof Error ? error.message: 'Erro'
-  //     Alert.alert('Erro', `Não foi possivel processar o arquivo: ${errorMessage}`)      
-  //   }finally{
-  //     setIsUploading(false)
-  //     setTimeout(() => setUploadProgress(0), 1000);
+      if(response.ok){
+        const data: ApiResponse = await response.json()
+        incrementsUploads()
+        console.log(data.summary.split("</think>")[1].trim())
+        if(data.summary && data.success){
+          setSummary(data.summary.split("</think>")[1].trim())
+          setTimeout(() => {
+            Alert.alert('Sucesso', 'PDF processado com sucesso!')
+          }, 500)
+        }else{
+          throw new Error(data.error || 'Erro')
+        }
+      }else{
+        throw new Error(`Erro HTTP: ${response.status}`)
+      }
+    } catch (error) {
+      console.error('Erro ao processar PDF :( ', error)
+      const errorMessage = error instanceof Error ? error.message: 'Erro'
+      Alert.alert('Erro', `Não foi possivel processar o arquivo: ${errorMessage}`)      
+    }finally{
+      setIsUploading(false)
+      setTimeout(() => setUploadProgress(0), 1000);
       
-  //   }
+    }
 
-  // }, [selectedFile, simulateUploadProgress])
+  }, [selectedFile, simulateUploadProgress])
 
   const clearSelection = useCallback((): void =>{
     setSelectedFile(null)
@@ -301,7 +301,7 @@ const fileSelector = () => {
 
               <Button 
                 mode='contained'
-                onPress={setMockSummary}
+                onPress={uploadAndProcessFile}
                 disabled={isUploading}
                 icon={() => isUploading ? <Loader/> : <Brain color="#f8fafc"/>}
                 style={styles.button}

@@ -50,11 +50,11 @@ const profile = () => {
     console.log("Finalizando processo de garantir insignia ao usuario")
   }
 
-  const getUserBadges = async() => {
-    console.log('Pegando todas as badges')
-    const result = await badgeDatabase.getAllBadges()
-    setUserBadges(result)
-  }
+  // const getUserBadges = async() => {
+  //   console.log('Pegando todas as badges')
+  //   const result = await badgeDatabase.getAllBadges()
+  //   setUserBadges(result)
+  // }
 
   const getUserEmail = useCallback(async(): Promise<void> => {
     if(!userId){
